@@ -1,17 +1,21 @@
-name: Deploy Project
-
+name: Build and Deploy
 on:
   push:
-    branches:
-      - main
+    branches: [master]
+permissions:
+  contents: write
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    container:
-      image: node:20
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install and Build
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
+          folder: build # The folder the action should deploy
