@@ -26,10 +26,10 @@ jobs:
 
     - name: Configure Git
       run: |
-        git config --global user.email "vitaliy.dubikov@gmail.com"  # Ваш email
-        git config --global user.name "ZVitos"  # Ваше имя
+        git config --global user.email "vitaliy.dubikov@gmail.com"
+        git config --global user.name "ZVitos"
 
     - name: Deploy
-      run: |
-        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-        npm run deploy
+      run: npm run deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
