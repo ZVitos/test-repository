@@ -16,13 +16,18 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '22'
+        node-version: '2'  # Замените на вашу версию Node.js
 
     - name: Install dependencies
       run: npm install
 
     - name: Build
       run: npm run build
+
+    - name: Configure Git
+      run: |
+        git config --global user.email "vitaliy.dubikov@gmail.com"
+        git config --global user.name "ZVitos"
 
     - name: Deploy
       run: npm run deploy
