@@ -1,5 +1,5 @@
 {
-  "homepage": "https://zvitos.github.io/lab5/",
+  "homepage": "git@git.drupal.org:project/test-repository.git",
   "name": "test-app",
   "version": "0.1.0",
   "private": true,
