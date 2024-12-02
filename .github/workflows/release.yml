@@ -1,38 +1,35 @@
-name: Release
+name: Deploy to GitHub Pages
+
 on:
   push:
     branches:
-      - master
-permissions:
-  contents: read # for checkout
+      - main  # Основная ветка, которая триггерит деплой
 
 jobs:
-  release:
-    name: Release
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - name: Checkout code
+      uses: actions/checkout@v2
+  
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22'  # Версия Node.js
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "lts/*"
+    - name: Install dependencies
+      run: npm install
 
-      - name: Install dependencies
-        run: npm clean-install
+    - name: Build
+      run: npm run build
 
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
+    - name: Configure Git
+      run: |
+        git config --global user.email "vitaliy.dubikov@gmail.com"  # Ваш email
+        git config --global user.name "ZVitos"  # Ваше имя
 
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+    - name: Deploy
+      run: npm run deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
