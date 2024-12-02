@@ -24,8 +24,12 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Deploy
+    - name: Configure Git
       run: |
-        npm run deploy -- --repo https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/${{ github.repository }}.git
+        git config --global user.email "vitaliy.dubikov@gmail.com"
+        git config --global user.name "ZVitos"
+
+    - name: Deploy
+      run: npm run deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
