@@ -8,11 +8,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup credentials to access private repositories
-        run: git config --global url.https://${{ secrets.MY_PAT }}@github.com/.insteadOf https://github.com/
-      - name: Step that does stuff with Git
-        run: some git commands
-        
       - name: Checkout
         uses: actions/checkout@v4
 
