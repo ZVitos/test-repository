@@ -1,35 +1,21 @@
-name: Deploy to GitHub Pages
-
+name: Build and Deploy
 on:
   push:
-    branches:
-      - main  # Основная ветка, которая триггерит деплой
-
+    branches: [master]
+permissions:
+  contents: write
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-  
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'  # Версия Node.js
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build
-      run: npm run build
-
-    - name: Configure Git
-      run: |
-        git config --global user.email "vitaliy.dubikov@gmail.com"
-        git config --global user.name "ZVitos"
-
-    - name: Deploy
-      run: npm run deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install and Build
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build # The folder the action should deploy.
